@@ -1,0 +1,102 @@
+{
+  "path": "/api/posts?page=3",
+  "concurrency": 8,
+  "cpu_limit": 1.0,
+  "workers": 1,
+  "stacks": {
+    "rails": [
+      {
+        "threads": 1,
+        "rps": 615.5,
+        "p50_ms": 1.351,
+        "p99_ms": 103.551,
+        "cpu_ms_per_req": 1.0724,
+        "cores_used": 0.66,
+        "mem_mb": 99.8
+      },
+      {
+        "threads": 2,
+        "rps": 606.2,
+        "p50_ms": 3.031,
+        "p99_ms": 105.38,
+        "cpu_ms_per_req": 1.3947,
+        "cores_used": 0.845,
+        "mem_mb": 89.4
+      },
+      {
+        "threads": 3,
+        "rps": 452.1,
+        "p50_ms": 6.717,
+        "p99_ms": 137.068,
+        "cpu_ms_per_req": 1.8012,
+        "cores_used": 0.814,
+        "mem_mb": 95.8
+      },
+      {
+        "threads": 5,
+        "rps": 398.0,
+        "p50_ms": 12.612,
+        "p99_ms": 133.055,
+        "cpu_ms_per_req": 2.0382,
+        "cores_used": 0.811,
+        "mem_mb": 89.9
+      },
+      {
+        "threads": 10,
+        "rps": 421.8,
+        "p50_ms": 19.201,
+        "p99_ms": 21.56,
+        "cpu_ms_per_req": 1.9622,
+        "cores_used": 0.828,
+        "mem_mb": 92.0
+      }
+    ],
+    "rails-bare": [
+      {
+        "threads": 1,
+        "rps": 2937.9,
+        "p50_ms": 0.261,
+        "p99_ms": 21.66,
+        "cpu_ms_per_req": 0.1386,
+        "cores_used": 0.407,
+        "mem_mb": 45.2
+      },
+      {
+        "threads": 2,
+        "rps": 2148.6,
+        "p50_ms": 0.858,
+        "p99_ms": 30.496,
+        "cpu_ms_per_req": 0.3062,
+        "cores_used": 0.658,
+        "mem_mb": 42.8
+      },
+      {
+        "threads": 3,
+        "rps": 1260.3,
+        "p50_ms": 2.365,
+        "p99_ms": 57.165,
+        "cpu_ms_per_req": 0.5567,
+        "cores_used": 0.702,
+        "mem_mb": 43.6
+      },
+      {
+        "threads": 5,
+        "rps": 823.8,
+        "p50_ms": 6.316,
+        "p99_ms": 60.357,
+        "cpu_ms_per_req": 0.8342,
+        "cores_used": 0.687,
+        "mem_mb": 51.8
+      },
+      {
+        "threads": 10,
+        "rps": 846.9,
+        "p50_ms": 9.734,
+        "p99_ms": 11.88,
+        "cpu_ms_per_req": 0.8271,
+        "cores_used": 0.701,
+        "mem_mb": 43.5
+      }
+    ]
+  }
+}

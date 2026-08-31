@@ -1,0 +1,16 @@
+
+rails — 1 CPU, 1 process, load concurrency 8
+ threads      rps  vs 1 thread  cores used  CPU ms/req     p50      p99   mem MB
+       1      616        1.00x        0.66       1.072    1.35   103.55     99.8
+       2      606        0.98x        0.84       1.395    3.03   105.38     89.4
+       3      452        0.73x        0.81       1.801    6.72   137.07     95.8
+       5      398        0.65x        0.81       2.038   12.61   133.06     89.9
+      10      422        0.69x        0.83       1.962   19.20    21.56     92.0
+
+rails-bare — 1 CPU, 1 process, load concurrency 8
+ threads      rps  vs 1 thread  cores used  CPU ms/req     p50      p99   mem MB
+       1     2938        1.00x        0.41       0.139    0.26    21.66     45.2
+       2     2149        0.73x        0.66       0.306    0.86    30.50     42.8
+       3     1260        0.43x        0.70       0.557    2.37    57.16     43.6
+       5      824        0.28x        0.69       0.834    6.32    60.36     51.8
+      10      847        0.29x        0.70       0.827    9.73    11.88     43.5
