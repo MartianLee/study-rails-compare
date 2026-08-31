@@ -1,0 +1,66 @@
+{
+  "service": "rails",
+  "path": "/api/posts?page=3",
+  "samples": [
+    {
+      "workers": 1,
+      "boot_ms": 474,
+      "procs": 4,
+      "mem_boot_mb": 106.9,
+      "mem_warm_mb": 122.0,
+      "mem_peak_mb": 122.6,
+      "anon_mb": 90.1,
+      "rps": 364.0278279534768,
+      "p50_ms": 13.661,
+      "p99_ms": 146.712,
+      "naive_estimate_mb": 122.6,
+      "overestimate_x": 1.0,
+      "marginal_mb_per_worker": null
+    },
+    {
+      "workers": 2,
+      "boot_ms": 469,
+      "procs": 6,
+      "mem_boot_mb": 97.6,
+      "mem_warm_mb": 193.1,
+      "mem_peak_mb": 198.2,
+      "anon_mb": 197.0,
+      "rps": 846.6715732776507,
+      "p50_ms": 11.495,
+      "p99_ms": 106.02,
+      "naive_estimate_mb": 245.2,
+      "overestimate_x": 1.24,
+      "marginal_mb_per_worker": 75.6
+    },
+    {
+      "workers": 4,
+      "boot_ms": 475,
+      "procs": 8,
+      "mem_boot_mb": 111.0,
+      "mem_warm_mb": 312.8,
+      "mem_peak_mb": 316.5,
+      "anon_mb": 316.3,
+      "rps": 1585.4740301499726,
+      "p50_ms": 11.99,
+      "p99_ms": 110.359,
+      "naive_estimate_mb": 490.4,
+      "overestimate_x": 1.55,
+      "marginal_mb_per_worker": 64.6
+    },
+    {
+      "workers": 8,
+      "boot_ms": 476,
+      "procs": 12,
+      "mem_boot_mb": 136.4,
+      "mem_warm_mb": 547.4,
+      "mem_peak_mb": 553.2,
+      "anon_mb": 552.4,
+      "rps": 2290.974250660497,
+      "p50_ms": 14.793,
+      "p99_ms": 161.183,
+      "naive_estimate_mb": 980.8,
+      "overestimate_x": 1.77,
+      "marginal_mb_per_worker": 61.5
+    }
+  ]
+}

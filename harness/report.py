@@ -14,8 +14,8 @@ import statistics as st
 from common import PAIRS, ROOT, STACKS
 
 METRICS = ["rps", "cpu_ms_per_req", "mysql_cpu_ms_per_req", "cpu_used_cores",
-           "p50_ms", "p95_ms", "p99_ms", "mean_ms"]
-ENDPOINTS = ["list", "detail", "create", "probe_static", "probe_pluck"]
+           "mysql_cores", "p50_ms", "p95_ms", "p99_ms", "mean_ms"]
+ENDPOINTS = ["list", "detail", "list_idle", "create", "probe_static", "probe_pluck"]
 
 
 def med(vals):

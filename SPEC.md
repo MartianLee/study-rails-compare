@@ -111,12 +111,20 @@ varying only how much Active Record runs.
 Within each pair the two variants use the same MySQL protocol, because a
 prepared-statement stack and a text-protocol stack are not comparable:
 
-| pair | protocol |
-|---|---|
-| Ruby | prepared (`prepared_statements: true` in `database.yml`, `Mysql2::Client#prepare` in the bare app) |
-| Go | prepared (GORM `PrepareStmt: true`, `database/sql` placeholders) |
-| Node | text (Sequelize's default, `pool.query` in the bare app) |
-| Python | text (Django's default client-side interpolation, `cursor.execute` args in the bare app) |
+| pair | protocol | statements cached? |
+|---|---|---|
+| Ruby | prepared | yes both sides — Rails' per-connection cache, `Mysql2::Statement` per Puma thread |
+| Go | prepared | yes both sides — GORM `PrepareStmt: true`, a `sync.Map` of `*sql.Stmt` in the bare app |
+| Node | text | n/a — Sequelize's default and `pool.query` both send text |
+| Python | text | n/a — Django's client-side interpolation and `cursor.execute` args both send text |
+
+The Go row needed fixing and is worth calling out, because it is exactly the kind
+of thing that quietly decides a benchmark. `database/sql`'s `db.Query(sql, args...)`
+does **not** cache: with `go-sql-driver` it prepares, executes and closes the
+statement on every call — three round trips instead of one, and a fresh parse in
+MySQL each time. GORM with `PrepareStmt: true` caches. Left alone, GORM would have
+looked better than it is purely because the thing it was compared against was
+handicapped. The bare app now keeps its own statement cache.
 
 Across runtimes the protocol therefore differs. That is one more reason the
 within-runtime ratio is the number to quote.
@@ -148,7 +156,34 @@ within-runtime ratio is the number to quote.
   allowed to keep as many queries in flight as it can.
 - Each endpoint gets a throwaway warm-up pass, then a fresh 10-second window.
   The CPU counter is read around the measured window only.
+- **The database is rebuilt from `schema.sql` + `seed.sql` before every run.** The
+  write test inserts and deletes on the order of a hundred thousand rows, which
+  leaves the tables fragmented and the auto_increment far from where it started.
+  Two runs against differently-aged tables are not the same experiment.
+- **MySQL gets 8 CPUs and the load generator 3**, far above what any app under
+  test can drive them to. An earlier campaign gave MySQL 4, and the fastest bare
+  stacks pushed it to 3.2 cores and began queueing on the database — at which
+  point the benchmark was measuring MySQL, not the app. Every result records
+  `mysql_cores` for the window so a reader can check this directly.
 - 3 independent runs. The reported number is the **median**, with the spread.
+
+## Which number to quote
+
+**CPU-ms per request is the robust one.** Two campaigns run days apart with
+different MySQL configurations produced app CPU per request within a few percent
+of each other (Rails 1.13 → 1.11, Rack 0.144 → 0.140) while *throughput* moved by
+a third. The reason is structural: a `bare` stack does so little work per request
+that its throughput is dominated by database round-trip latency, so anything that
+changes round-trip latency changes the throughput ratio without changing what
+either application actually does.
+
+The practical consequence is worth stating plainly, because it cuts against how
+these comparisons are usually quoted: **the magic tax measured as a throughput
+ratio depends on how fast your database is.** Against a local, unloaded MySQL the
+ratio is at its largest. Against a managed database across a network — which is
+what you actually run — the framework's share of the request shrinks and the
+ratio comes down. The CPU ratio does not move, because it is a property of the
+code, not of the wire.
 
 ## Modes
 

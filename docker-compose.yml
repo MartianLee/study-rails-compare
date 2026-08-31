@@ -46,9 +46,13 @@ services:
       - mysqldata:/var/lib/mysql
     deploy:
       resources:
+        # Deliberately far above what any app under test can drive it to. A
+        # benchmark of app servers must never end up measuring the database:
+        # at 4 CPUs the fastest stacks pushed MySQL to 3.2 cores and started
+        # queueing on it instead of on themselves.
         limits:
-          cpus: "4.0"
-          memory: 3g
+          cpus: "8.0"
+          memory: 6g
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
       interval: 3s
@@ -148,7 +152,7 @@ services:
       resources:
         limits:
           # generously above any app under test, so the instrument is never the bottleneck
-          cpus: "4.0"
+          cpus: "3.0"
           memory: 512m
 
 networks:

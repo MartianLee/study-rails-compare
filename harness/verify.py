@@ -158,10 +158,6 @@ def main():
     print("all 8 stacks return identical JSON and emit the same statements.")
 
 
-if __name__ == "__main__":
-    main()
-
-
 def write_sql_doc(results):
     """Write down what MySQL actually saw, per stack. This is the evidence for
     the fairness rule in SPEC.md — if two stacks run different SQL, comparing
@@ -181,3 +177,7 @@ def write_sql_doc(results):
                   "```sql"] + list(e.get("sql_detail", [])) + ["```", ""]
     with open(f"{ROOT}/docs/sql-emitted.md", "w") as f:
         f.write("\n".join(lines) + "\n")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,64 @@
+{
+  "rows_per_request": 20,
+  "post_columns": 11,
+  "steps": [
+    {
+      "step": "1. raw mysql2 + hand-built hashes",
+      "ms": 0.2129,
+      "objects": 602.1
+    },
+    {
+      "step": "2. same 4 statements via AR, pluck (no models)",
+      "ms": 0.4198,
+      "objects": 1473.0
+    },
+    {
+      "step": "3. includes(:user, :tags).to_a (models, attributes untouched)",
+      "ms": 0.7552,
+      "objects": 3222.0
+    },
+    {
+      "step": "4. + full serialisation (every attribute read)",
+      "ms": 0.8697,
+      "objects": 3896.0
+    }
+  ],
+  "by_column_count": {
+    "2": {
+      "ms": 0.0953,
+      "objects": 353.0
+    },
+    "4": {
+      "ms": 0.1045,
+      "objects": 435.0
+    },
+    "7": {
+      "ms": 0.1219,
+      "objects": 438.0
+    },
+    "11": {
+      "ms": 0.1791,
+      "objects": 862.0
+    }
+  },
+  "allocations_by_type_one_request": {
+    "T_OBJECT": 926,
+    "T_STRING": 516,
+    "T_HASH": 766,
+    "T_ARRAY": 1227,
+    "T_DATA": 110,
+    "T_STRUCT": 13,
+    "T_IMEMO": 369
+  },
+  "allocations_by_class_one_request": {
+    "Post": 20,
+    "User": 20,
+    "Tag": 31,
+    "ActiveModel::Attribute": 140,
+    "ActiveModel::AttributeSet": 137,
+    "ActiveModel::LazyAttributeSet": 137,
+    "ActiveRecord::Associations::BelongsToAssociation": 86,
+    "ActiveRecord::Result": 4,
+    "ActiveRecord::Relation": 66
+  }
+}

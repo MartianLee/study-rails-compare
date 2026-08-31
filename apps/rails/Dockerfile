@@ -4,8 +4,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       build-essential pkg-config default-libmysqlclient-dev curl git \
  && rm -rf /var/lib/apt/lists/*
 ENV BUNDLE_WITHOUT=development:test BUNDLE_DEPLOYMENT=false
-COPY Gemfile Gemfile.lock* ./
-RUN bundle install --jobs 4 && bundle clean --force
+# Gemfile.lock is committed; `frozen` makes bundler refuse to resolve anything else
+COPY Gemfile Gemfile.lock ./
+RUN bundle config set --local frozen true && bundle install --jobs 4 && bundle clean --force
 COPY . .
 ENV RAILS_ENV=production \
     RAILS_LOG_TO_STDOUT=1 \

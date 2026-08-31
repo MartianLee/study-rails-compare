@@ -122,6 +122,32 @@ def mem_mb(service):
     return out
 
 
+def db_cores(seconds=2.0):
+    """MySQL's CPU usage right now, in cores. Used to wait for InnoDB to finish
+    purging after the write test before measuring anything else — a background
+    purge left running is a bottleneck the next stack would be charged for."""
+    cid = container_id("mysql")
+    if not cid:
+        return 0.0
+    def usec():
+        r = sh(f"docker exec {cid} sh -c 'head -1 /sys/fs/cgroup/cpu.stat'")
+        try:
+            return int(r.stdout.split()[1])
+        except Exception:
+            return 0
+    a = usec()
+    time.sleep(seconds)
+    return (usec() - a) / 1e6 / seconds
+
+
+def wait_db_idle(threshold=0.25, limit=120):
+    t0 = time.time()
+    while time.time() - t0 < limit:
+        if db_cores(1.5) < threshold:
+            return round(time.time() - t0, 1)
+    return round(time.time() - t0, 1)
+
+
 def loadgen(target, path, conc, duration, warmup=3, method="GET", body=None):
     args = (f"-url http://{target}:3000{path} -c {conc} -d {duration}s -warmup {warmup}s "
             f"-method {method}")

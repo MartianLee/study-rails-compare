@@ -1,0 +1,10 @@
+{"workers": 1, "boot_ms": 490, "procs": 4, "mem_boot_mb": 105.9, "mem_warm_mb": 91.1, "mem_peak_mb": 92.5, "anon_mb": 91.2, "rps": 374.2594700347606, "p50_ms": 13.352, "p99_ms": 140.015}
+{"workers": 2, "boot_ms": 471, "procs": 6, "mem_boot_mb": 98.3, "mem_warm_mb": 194.0, "mem_peak_mb": 198.0, "anon_mb": 197.3, "rps": 846.0658777861096, "p50_ms": 11.54, "p99_ms": 104.059}
+{"workers": 4, "boot_ms": 485, "procs": 8, "mem_boot_mb": 141.5, "mem_warm_mb": 345.7, "mem_peak_mb": 350.4, "anon_mb": 317.4, "rps": 1593.8246121866648, "p50_ms": 12.024, "p99_ms": 108.495}
+{"workers": 8, "boot_ms": 485, "procs": 12, "mem_boot_mb": 136.6, "mem_warm_mb": 548.2, "mem_peak_mb": 553.3, "anon_mb": 552.4, "rps": 2296.785244292247, "p50_ms": 15.887, "p99_ms": 155.719}
+
+workers  actual  naive(workers x 1-worker)  overestimate  marginal/worker  rps
+      1    92.5                      92.5          1.0x             None     374.3
+      2   198.0                     185.0         0.93x            105.5     846.1
+      4   350.4                     370.0         1.06x             86.0    1593.8
+      8   553.3                     740.0         1.34x             65.8    2296.8

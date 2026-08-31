@@ -11,12 +11,51 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 var db *sql.DB
+
+// stmtCache mirrors what GORM does with PrepareStmt: prepare once per statement
+// text, reuse forever. Without it, database/sql prepares, executes and closes a
+// statement on every single Query — three round trips instead of one — and the
+// Gin+GORM app would look better than it is purely because it caches and this
+// one does not. See SPEC.md, "Wire protocol".
+var stmtCache sync.Map
+
+func prep(query string) (*sql.Stmt, error) {
+	if v, ok := stmtCache.Load(query); ok {
+		return v.(*sql.Stmt), nil
+	}
+	st, err := db.Prepare(query)
+	if err != nil {
+		return nil, err
+	}
+	actual, loaded := stmtCache.LoadOrStore(query, st)
+	if loaded {
+		st.Close()
+	}
+	return actual.(*sql.Stmt), nil
+}
+
+func query(q string, args ...any) (*sql.Rows, error) {
+	st, err := prep(q)
+	if err != nil {
+		return nil, err
+	}
+	return st.Query(args...)
+}
+
+func queryRow(q string, args ...any) (*sql.Row, error) {
+	st, err := prep(q)
+	if err != nil {
+		return nil, err
+	}
+	return st.QueryRow(args...), nil
+}
 
 type author struct {
 	ID   uint64 `json:"id"`
@@ -90,7 +129,7 @@ func loadAuthors(ids []any) (map[uint64]author, error) {
 	if len(ids) == 0 {
 		return m, nil
 	}
-	rows, err := db.Query("SELECT id, name FROM users WHERE id IN ("+placeholders(len(ids))+")", ids...)
+	rows, err := query("SELECT id, name FROM users WHERE id IN ("+placeholders(len(ids))+")", ids...)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +151,7 @@ func loadTags(ids []any) (map[uint64][]tag, error) {
 	if len(ids) == 0 {
 		return m, nil
 	}
-	rows, err := db.Query(
+	rows, err := query(
 		"SELECT post_id, tag_id FROM post_tags WHERE post_id IN ("+placeholders(len(ids))+")", ids...)
 	if err != nil {
 		return nil, err
@@ -140,7 +179,7 @@ func loadTags(ids []any) (map[uint64][]tag, error) {
 	if len(tagIDs) == 0 {
 		return m, nil
 	}
-	trows, err := db.Query(
+	trows, err := query(
 		"SELECT id, name, slug FROM tags WHERE id IN ("+placeholders(len(tagIDs))+")", tagIDs...)
 	if err != nil {
 		return nil, err
@@ -166,7 +205,7 @@ func handleList(w http.ResponseWriter, r *http.Request) {
 	if page < 1 {
 		page = 1
 	}
-	rows, err := db.Query(
+	rows, err := query(
 		"SELECT id, user_id, title, slug, body, view_count, comments_count, published_at "+
 			"FROM posts WHERE status = ? ORDER BY published_at DESC, id DESC LIMIT 20 OFFSET ?",
 		"published", (page-1)*20)
@@ -222,9 +261,11 @@ func handleDetail(w http.ResponseWriter, r *http.Request, id uint64) {
 	var uid uint64
 	var body string
 	var pub sql.NullTime
-	err := db.QueryRow(
-		"SELECT id, user_id, title, slug, body, view_count, comments_count, published_at FROM posts WHERE id = ?", id).
-		Scan(&p.ID, &uid, &p.Title, &p.Slug, &body, &p.ViewCount, &p.CommentCount, &pub)
+	row, err := queryRow(
+		"SELECT id, user_id, title, slug, body, view_count, comments_count, published_at FROM posts WHERE id = ?", id)
+	if err == nil {
+		err = row.Scan(&p.ID, &uid, &p.Title, &p.Slug, &body, &p.ViewCount, &p.CommentCount, &pub)
+	}
 	if err != nil {
 		writeJSON(w, 404, map[string]string{"error": "not found"})
 		return
@@ -241,7 +282,7 @@ func handleDetail(w http.ResponseWriter, r *http.Request, id uint64) {
 		p.Tags = []tag{}
 	}
 
-	rows, err := db.Query(
+	rows, err := query(
 		"SELECT id, user_id, body, created_at FROM comments WHERE post_id = ? ORDER BY id DESC LIMIT 20", id)
 	if err != nil {
 		writeJSON(w, 500, map[string]string{"error": err.Error()})

@@ -1,0 +1,487 @@
+{
+  "generated_from": "results/summary.json",
+  "modes": {
+    "single": {
+      "magic_tax": {
+        "Ruby": {
+          "full": "Rails 8 + Active Record",
+          "bare": "Rack + raw SQL",
+          "full_rps": 581.1,
+          "bare_rps": 2903.6,
+          "throughput_div": 5.0,
+          "full_cpu_ms": 1.1127,
+          "bare_cpu_ms": 0.1451,
+          "cpu_x": 7.67,
+          "full_mem_mb": 107.1,
+          "bare_mem_mb": 48.5,
+          "mem_x": 2.21,
+          "boot_x": 3.01
+        },
+        "Node": {
+          "full": "Express + Sequelize",
+          "bare": "node:http + raw SQL",
+          "full_rps": 1405.5,
+          "bare_rps": 4597.5,
+          "throughput_div": 3.27,
+          "full_cpu_ms": 0.5667,
+          "bare_cpu_ms": 0.2163,
+          "cpu_x": 2.62,
+          "full_mem_mb": 183.7,
+          "bare_mem_mb": 80.6,
+          "mem_x": 2.28,
+          "boot_x": 1.0
+        },
+        "Python": {
+          "full": "Django + Django ORM",
+          "bare": "WSGI + raw SQL",
+          "full_rps": 612.8,
+          "bare_rps": 1911.0,
+          "throughput_div": 3.12,
+          "full_cpu_ms": 1.4393,
+          "bare_cpu_ms": 0.2343,
+          "cpu_x": 6.14,
+          "full_mem_mb": 71.4,
+          "bare_mem_mb": 27.7,
+          "mem_x": 2.58,
+          "boot_x": 1.01
+        },
+        "Go": {
+          "full": "Gin + GORM",
+          "bare": "net/http + database/sql",
+          "full_rps": 3419.7,
+          "bare_rps": 7985.6,
+          "throughput_div": 2.34,
+          "full_cpu_ms": 0.2766,
+          "bare_cpu_ms": 0.1103,
+          "cpu_x": 2.51,
+          "full_mem_mb": 25.4,
+          "bare_mem_mb": 15.4,
+          "mem_x": 1.65,
+          "boot_x": 1.01
+        }
+      },
+      "list": {
+        "rails": {
+          "label": "Rails 8 + Active Record",
+          "rps": 581.1,
+          "cpu_ms": 1.1127,
+          "cores": 0.664,
+          "p50": 1.441,
+          "p95": 105.916,
+          "p99": 114.887,
+          "mem_peak_mb": 107.1,
+          "mem_boot_mb": 105.6,
+          "boot_ms": 472,
+          "spread": 0.0374
+        },
+        "rails-noyjit": {
+          "label": "Rails 8 + Active Record",
+          "rps": 369.6,
+          "cpu_ms": 2.0205,
+          "cores": 0.747,
+          "p50": 2.289,
+          "p95": 168.063,
+          "p99": 175.081,
+          "mem_peak_mb": 89.1,
+          "mem_boot_mb": 87.2,
+          "boot_ms": 467,
+          "spread": 0.0771
+        },
+        "rails-bare": {
+          "label": "Rack + raw SQL",
+          "rps": 2903.6,
+          "cpu_ms": 0.1451,
+          "cores": 0.405,
+          "p50": 0.269,
+          "p95": 21.114,
+          "p99": 23.87,
+          "mem_peak_mb": 48.5,
+          "mem_boot_mb": 32.9,
+          "boot_ms": 157,
+          "spread": 0.1507
+        },
+        "node": {
+          "label": "Express + Sequelize",
+          "rps": 1405.5,
+          "cpu_ms": 0.5667,
+          "cores": 0.851,
+          "p50": 5.536,
+          "p95": 7.332,
+          "p99": 8.834,
+          "mem_peak_mb": 183.7,
+          "mem_boot_mb": 127.0,
+          "boot_ms": 160,
+          "spread": 0.0823
+        },
+        "node-bare": {
+          "label": "node:http + raw SQL",
+          "rps": 4597.5,
+          "cpu_ms": 0.2163,
+          "cores": 0.994,
+          "p50": 1.684,
+          "p95": 2.22,
+          "p99": 2.792,
+          "mem_peak_mb": 80.6,
+          "mem_boot_mb": 22.0,
+          "boot_ms": 160,
+          "spread": 0.0081
+        },
+        "python": {
+          "label": "Django + Django ORM",
+          "rps": 612.8,
+          "cpu_ms": 1.4393,
+          "cores": 0.882,
+          "p50": 12.63,
+          "p95": 15.598,
+          "p99": 20.792,
+          "mem_peak_mb": 71.4,
+          "mem_boot_mb": 62.5,
+          "boot_ms": 157,
+          "spread": 0.0106
+        },
+        "python-bare": {
+          "label": "WSGI + raw SQL",
+          "rps": 1911.0,
+          "cpu_ms": 0.2343,
+          "cores": 0.444,
+          "p50": 4.14,
+          "p95": 4.511,
+          "p99": 4.957,
+          "mem_peak_mb": 27.7,
+          "mem_boot_mb": 24.4,
+          "boot_ms": 155,
+          "spread": 0.1978
+        },
+        "go": {
+          "label": "Gin + GORM",
+          "rps": 3419.7,
+          "cpu_ms": 0.2766,
+          "cores": 0.946,
+          "p50": 2.288,
+          "p95": 3.434,
+          "p99": 4.062,
+          "mem_peak_mb": 25.4,
+          "mem_boot_mb": 19.9,
+          "boot_ms": 155,
+          "spread": 0.0509
+        },
+        "go-bare": {
+          "label": "net/http + database/sql",
+          "rps": 7985.6,
+          "cpu_ms": 0.1103,
+          "cores": 0.881,
+          "p50": 0.89,
+          "p95": 1.996,
+          "p99": 2.741,
+          "mem_peak_mb": 15.4,
+          "mem_boot_mb": 9.8,
+          "boot_ms": 153,
+          "spread": 0.3077
+        }
+      }
+    },
+    "tuned": {
+      "magic_tax": {
+        "Ruby": {
+          "full": "Rails 8 + Active Record",
+          "bare": "Rack + raw SQL",
+          "full_rps": 791.5,
+          "bare_rps": 2686.4,
+          "throughput_div": 3.39,
+          "full_cpu_ms": 1.9379,
+          "bare_cpu_ms": 0.4171,
+          "cpu_x": 4.65,
+          "full_mem_mb": 227.1,
+          "bare_mem_mb": 112.6,
+          "mem_x": 2.02,
+          "boot_x": 3.01
+        },
+        "Node": {
+          "full": "Express + Sequelize",
+          "bare": "node:http + raw SQL",
+          "full_rps": 3100.9,
+          "bare_rps": 5695.5,
+          "throughput_div": 1.84,
+          "full_cpu_ms": 0.5384,
+          "bare_cpu_ms": 0.2364,
+          "cpu_x": 2.28,
+          "full_mem_mb": 303.4,
+          "bare_mem_mb": 201.7,
+          "mem_x": 1.5,
+          "boot_x": 1.97
+        },
+        "Python": {
+          "full": "Django + Django ORM",
+          "bare": "WSGI + raw SQL",
+          "full_rps": 1091.8,
+          "bare_rps": 4989.5,
+          "throughput_div": 4.57,
+          "full_cpu_ms": 1.8291,
+          "bare_cpu_ms": 0.4013,
+          "cpu_x": 4.56,
+          "full_mem_mb": 100.7,
+          "bare_mem_mb": 44.7,
+          "mem_x": 2.25,
+          "boot_x": 1.01
+        },
+        "Go": {
+          "full": "Gin + GORM",
+          "bare": "net/http + database/sql",
+          "full_rps": 3828.5,
+          "bare_rps": 8478.2,
+          "throughput_div": 2.21,
+          "full_cpu_ms": 0.3894,
+          "bare_cpu_ms": 0.1914,
+          "cpu_x": 2.03,
+          "full_mem_mb": 31.7,
+          "bare_mem_mb": 14.0,
+          "mem_x": 2.26,
+          "boot_x": 0.98
+        }
+      },
+      "list": {
+        "rails": {
+          "label": "Rails 8 + Active Record",
+          "rps": 791.5,
+          "cpu_ms": 1.9379,
+          "cores": 1.543,
+          "p50": 11.463,
+          "p95": 484.023,
+          "p99": 552.239,
+          "mem_peak_mb": 227.1,
+          "mem_boot_mb": 129.2,
+          "boot_ms": 472,
+          "spread": 0.0415
+        },
+        "rails-bare": {
+          "label": "Rack + raw SQL",
+          "rps": 2686.4,
+          "cpu_ms": 0.4171,
+          "cores": 1.142,
+          "p50": 2.532,
+          "p95": 173.084,
+          "p99": 183.435,
+          "mem_peak_mb": 112.6,
+          "mem_boot_mb": 43.0,
+          "boot_ms": 157,
+          "spread": 0.1886
+        },
+        "node": {
+          "label": "Express + Sequelize",
+          "rps": 3100.9,
+          "cpu_ms": 0.5384,
+          "cores": 1.676,
+          "p50": 15.922,
+          "p95": 18.829,
+          "p99": 21.74,
+          "mem_peak_mb": 303.4,
+          "mem_boot_mb": 205.7,
+          "boot_ms": 314,
+          "spread": 0.03
+        },
+        "node-bare": {
+          "label": "node:http + raw SQL",
+          "rps": 5695.5,
+          "cpu_ms": 0.2364,
+          "cores": 1.346,
+          "p50": 8.701,
+          "p95": 10.714,
+          "p99": 11.828,
+          "mem_peak_mb": 201.7,
+          "mem_boot_mb": 62.7,
+          "boot_ms": 159,
+          "spread": 0.1495
+        },
+        "python": {
+          "label": "Django + Django ORM",
+          "rps": 1091.8,
+          "cpu_ms": 1.8291,
+          "cores": 1.999,
+          "p50": 47.123,
+          "p95": 64.096,
+          "p99": 85.077,
+          "mem_peak_mb": 100.7,
+          "mem_boot_mb": 88.0,
+          "boot_ms": 158,
+          "spread": 0.0262
+        },
+        "python-bare": {
+          "label": "WSGI + raw SQL",
+          "rps": 4989.5,
+          "cpu_ms": 0.4013,
+          "cores": 2.002,
+          "p50": 8.881,
+          "p95": 21.082,
+          "p99": 26.162,
+          "mem_peak_mb": 44.7,
+          "mem_boot_mb": 37.6,
+          "boot_ms": 157,
+          "spread": 0.1026
+        },
+        "go": {
+          "label": "Gin + GORM",
+          "rps": 3828.5,
+          "cpu_ms": 0.3894,
+          "cores": 1.494,
+          "p50": 12.63,
+          "p95": 21.142,
+          "p99": 24.921,
+          "mem_peak_mb": 31.7,
+          "mem_boot_mb": 20.2,
+          "boot_ms": 154,
+          "spread": 0.1575
+        },
+        "go-bare": {
+          "label": "net/http + database/sql",
+          "rps": 8478.2,
+          "cpu_ms": 0.1914,
+          "cores": 1.619,
+          "p50": 5.698,
+          "p95": 9.996,
+          "p99": 13.304,
+          "mem_peak_mb": 14.0,
+          "mem_boot_mb": 9.9,
+          "boot_ms": 157,
+          "spread": 0.0867
+        }
+      }
+    }
+  },
+  "rails_layers": {
+    "probe_static": {
+      "label": "Rails, no database at all",
+      "rps": 5562.0,
+      "cpu_ms": 0.127
+    },
+    "probe_pluck": {
+      "label": "same 4 queries, `pluck`, no AR objects",
+      "rps": 853.8,
+      "cpu_ms": 0.6751
+    },
+    "list": {
+      "label": "same 4 queries, full Active Record",
+      "rps": 581.1,
+      "cpu_ms": 1.1127
+    },
+    "bare": {
+      "label": "Rack + raw SQL (no Rails at all)",
+      "rps": 2903.6,
+      "cpu_ms": 0.1451
+    }
+  },
+  "yjit": {
+    "rails": {
+      "rps": 581.1,
+      "cpu_ms": 1.1127,
+      "mem_mb": 107.1
+    },
+    "rails-noyjit": {
+      "rps": 369.6,
+      "cpu_ms": 2.0205,
+      "mem_mb": 89.1
+    },
+    "throughput_gain": 1.572,
+    "cpu_saved": 0.449,
+    "memory_cost_mb": 18.0
+  },
+  "cpu_utilisation_single": {
+    "rails": {
+      "cores": 0.664,
+      "mysql_cpu_ms": 0.2954
+    },
+    "rails-noyjit": {
+      "cores": 0.747,
+      "mysql_cpu_ms": 0.288
+    },
+    "rails-bare": {
+      "cores": 0.405,
+      "mysql_cpu_ms": 0.1319
+    },
+    "node": {
+      "cores": 0.851,
+      "mysql_cpu_ms": 0.1944
+    },
+    "node-bare": {
+      "cores": 0.994,
+      "mysql_cpu_ms": 0.1874
+    },
+    "python": {
+      "cores": 0.882,
+      "mysql_cpu_ms": 0.1889
+    },
+    "python-bare": {
+      "cores": 0.444,
+      "mysql_cpu_ms": 0.2846
+    },
+    "go": {
+      "cores": 0.946,
+      "mysql_cpu_ms": 0.6539
+    },
+    "go-bare": {
+      "cores": 0.881,
+      "mysql_cpu_ms": 0.2652
+    }
+  },
+  "workers": [
+    {
+      "workers": 1,
+      "boot_ms": 474,
+      "procs": 4,
+      "mem_boot_mb": 106.9,
+      "mem_warm_mb": 122.0,
+      "mem_peak_mb": 122.6,
+      "anon_mb": 90.1,
+      "rps": 364.0278279534768,
+      "p50_ms": 13.661,
+      "p99_ms": 146.712,
+      "naive_estimate_mb": 122.6,
+      "overestimate_x": 1.0,
+      "marginal_mb_per_worker": null
+    },
+    {
+      "workers": 2,
+      "boot_ms": 469,
+      "procs": 6,
+      "mem_boot_mb": 97.6,
+      "mem_warm_mb": 193.1,
+      "mem_peak_mb": 198.2,
+      "anon_mb": 197.0,
+      "rps": 846.6715732776507,
+      "p50_ms": 11.495,
+      "p99_ms": 106.02,
+      "naive_estimate_mb": 245.2,
+      "overestimate_x": 1.24,
+      "marginal_mb_per_worker": 75.6
+    },
+    {
+      "workers": 4,
+      "boot_ms": 475,
+      "procs": 8,
+      "mem_boot_mb": 111.0,
+      "mem_warm_mb": 312.8,
+      "mem_peak_mb": 316.5,
+      "anon_mb": 316.3,
+      "rps": 1585.4740301499726,
+      "p50_ms": 11.99,
+      "p99_ms": 110.359,
+      "naive_estimate_mb": 490.4,
+      "overestimate_x": 1.55,
+      "marginal_mb_per_worker": 64.6
+    },
+    {
+      "workers": 8,
+      "boot_ms": 476,
+      "procs": 12,
+      "mem_boot_mb": 136.4,
+      "mem_warm_mb": 547.4,
+      "mem_peak_mb": 553.2,
+      "anon_mb": 552.4,
+      "rps": 2290.974250660497,
+      "p50_ms": 14.793,
+      "p99_ms": 161.183,
+      "naive_estimate_mb": 980.8,
+      "overestimate_x": 1.77,
+      "marginal_mb_per_worker": 61.5
+    }
+  ]
+}
