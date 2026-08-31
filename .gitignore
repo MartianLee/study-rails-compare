@@ -1,0 +1,14 @@
+# generated deterministically by db/gen_seed.py — 16 MB of INSERTs, not worth versioning
+db/seed.sql
+
+# per-run measurement output; the committed numbers live in docs/RESULTS.md
+results/campaign.log
+
+# build artefacts
+apps/*/node_modules/
+apps/*/tmp/
+apps/*/log/
+apps/**/__pycache__/
+apps/**/*.pyc
+apps/go*/server
+.DS_Store

@@ -1,0 +1,159 @@
+# Every app container gets the same CPU limit, the same memory limit, the same
+# database and the same load generator. Only one app is ever running at a time —
+# see harness/run.py.
+#
+# The load generator is a container on this network on purpose: measuring from
+# the macOS host would put Docker's port forwarder in every latency sample.
+
+x-app-common: &app-common
+  depends_on:
+    mysql:
+      condition: service_healthy
+  networks: [bench]
+  restart: "no"
+  deploy:
+    resources:
+      limits:
+        cpus: "${APP_CPUS:-1.0}"
+        memory: ${APP_MEM:-1g}
+  environment: &app-env
+    DB_HOST: mysql
+    DB_NAME: blogbench
+    DB_USER: bench
+    DB_PASSWORD: bench
+    DB_POOL: "${DB_POOL:-2}"
+    WEB_CONCURRENCY: "${WEB_CONCURRENCY:-1}"
+    PORT: "3000"
+
+services:
+  mysql:
+    image: mysql:8.4
+    networks: [bench]
+    command:
+      - --innodb-buffer-pool-size=1G
+      - --innodb-flush-log-at-trx-commit=2
+      - --max-connections=300
+      - --skip-log-bin
+      - --log-output=TABLE
+      - --performance-schema=OFF
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blogbench
+      MYSQL_USER: bench
+      MYSQL_PASSWORD: bench
+    ports: ["13306:3306"]
+    volumes:
+      - mysqldata:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 3g
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-proot"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  # ---------------- Ruby ----------------
+  rails:
+    <<: *app-common
+    build: ./apps/rails
+    image: blogbench/rails
+    ports: ["3001:3000"]
+    environment:
+      <<: *app-env
+      RAILS_ENV: production
+      RAILS_MAX_THREADS: "${APP_THREADS:-1}"
+      RAILS_YJIT: "${RAILS_YJIT:-1}"
+      SECRET_KEY_BASE: benchmark_only_not_a_secret_0000000000000000000000000000
+
+  rails-bare:
+    <<: *app-common
+    build: ./apps/rails-bare
+    image: blogbench/rails-bare
+    ports: ["3002:3000"]
+    environment:
+      <<: *app-env
+      RAILS_MAX_THREADS: "${APP_THREADS:-1}"
+      RUBYOPT: "${RUBY_BARE_RUBYOPT:---yjit}"
+
+  # ---------------- Node ----------------
+  node:
+    <<: *app-common
+    build: ./apps/node
+    image: blogbench/node
+    ports: ["3003:3000"]
+    environment:
+      <<: *app-env
+      NODE_ENV: production
+      UV_THREADPOOL_SIZE: "${APP_THREADS:-4}"
+
+  node-bare:
+    <<: *app-common
+    build: ./apps/node-bare
+    image: blogbench/node-bare
+    ports: ["3004:3000"]
+    environment:
+      <<: *app-env
+      NODE_ENV: production
+      UV_THREADPOOL_SIZE: "${APP_THREADS:-4}"
+
+  # ---------------- Python ----------------
+  python:
+    <<: *app-common
+    build: ./apps/python
+    image: blogbench/python
+    ports: ["3005:3000"]
+    environment:
+      <<: *app-env
+      PY_THREADS: "${APP_THREADS:-1}"
+
+  python-bare:
+    <<: *app-common
+    build: ./apps/python-bare
+    image: blogbench/python-bare
+    ports: ["3006:3000"]
+    environment:
+      <<: *app-env
+      PY_THREADS: "${APP_THREADS:-1}"
+
+  # ---------------- Go ----------------
+  go:
+    <<: *app-common
+    build: ./apps/go
+    image: blogbench/go
+    ports: ["3007:3000"]
+    environment:
+      <<: *app-env
+      GOMAXPROCS: "${GOMAXPROCS:-1}"
+
+  go-bare:
+    <<: *app-common
+    build: ./apps/go-bare
+    image: blogbench/go-bare
+    ports: ["3008:3000"]
+    environment:
+      <<: *app-env
+      GOMAXPROCS: "${GOMAXPROCS:-1}"
+
+  # ---------------- measuring instrument ----------------
+  loadgen:
+    build: ./loadgen
+    image: blogbench/loadgen
+    networks: [bench]
+    profiles: ["tools"]
+    deploy:
+      resources:
+        limits:
+          # generously above any app under test, so the instrument is never the bottleneck
+          cpus: "4.0"
+          memory: 512m
+
+networks:
+  bench:
+    driver: bridge
+
+volumes:
+  mysqldata:
